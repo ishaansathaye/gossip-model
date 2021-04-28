@@ -18,6 +18,7 @@ def RK4(fun, y0, times, args=None):
 
 delta = 0.01
 
+#Change Rates
 def gossip(Y, args):
     #Y is a state vector, starting with the defined initial conditions.
     #args is an array of the parameters necessary for the model
@@ -29,54 +30,54 @@ def gossip(Y, args):
                      gamma * I - alpha * R + (1-p) * beta * S * I])
     return dYdt
 
-def parameters(gossiper, b=None, g=None, p=None, a=None):
-    #this function is an easy way to access the anthropomorphized sensitivity analyses
-    #the string gossiper is required. If the string is not one defined below, values
-    #b, g, p, and a must also be sent to the function.
-    #the returned values are the parameter values for beta, gamma, rho, and alpha.
-    if gossiper == 'Regina George':
-        beta = 0.03
-        gamma = 0.1
-        p = 0.2
-        alpha = 0.
-    elif gossiper == 'Dr. Neverheardofher':
-        beta = 0.0001
-        gamma = 0.00001
-        p = 0.99
-        alpha = 0.
-    elif gossiper == 'the Conwoman':
-        beta = 0.003
-        gamma = 0.001
-        p = 0.7
-        alpha = 0.009
-    elif gossiper == 'Test':
-        beta = 0.002
-        gamma = 0.01
-        p = 0.6
-        alpha = 0
-    else:
-        beta = b
-        gamma = g
-        p = p
-        alpha = a
-    return beta, gamma, p, alpha
+# def parameters(gossiper, b=None, g=None, p=None, a=None):
+#     #this function is an easy way to access the anthropomorphized sensitivity analyses
+#     #the string gossiper is required. If the string is not one defined below, values
+#     #b, g, p, and a must also be sent to the function.
+#     #the returned values are the parameter values for beta, gamma, rho, and alpha.
+#     if gossiper == 'Regina George':
+#         beta = 0.03
+#         gamma = 0.1
+#         p = 0.2
+#         alpha = 0.
+#     elif gossiper == 'Dr. Neverheardofher':
+#         beta = 0.0001
+#         gamma = 0.00001
+#         p = 0.99
+#         alpha = 0.
+#     elif gossiper == 'the Conwoman':
+#         beta = 0.003
+#         gamma = 0.001
+#         p = 0.7
+#         alpha = 0.009
+#     elif gossiper == 'Test':
+#         beta = 0.002
+#         gamma = 0.01
+#         p = 0.6
+#         alpha = 0
+#     else:
+#         beta = b
+#         gamma = g
+#         p = p
+#         alpha = a
+#     return beta, gamma, p, alpha
 
-TotalPopulation = 1000
-RumorStarters = 1
-IC = np.array([TotalPopulation-RumorStarters, RumorStarters, 0.])
+# TotalPopulation = 1000
+# RumorStarters = 1
+# IC = np.array([TotalPopulation-RumorStarters, RumorStarters, 0.])
 
-Days = 31.
-times = np.arange(0., Days+delta, delta)
+# Days = 31.
+# times = np.arange(0., Days+delta, delta)
 
-gossiper = 'Test'
-Rumor = RK4(gossip, IC, times, parameters(gossiper))
+# gossiper = 'Test'
+# Rumor = RK4(gossip, IC, times, parameters(gossiper))
 
-with plt.rc_context({'figure.figsize':(9,7)}):
-    plt.plot(times, Rumor[:, 0], lw='5', c = 'b', label= 'S')
-    plt.plot(times, Rumor[:, 1], lw='5', c = 'r', label = 'I')
-    plt.plot(times, Rumor[:, 2], lw='5', c = 'y', label = 'R')
-    leg = plt.legend(loc='upper right',fontsize = 16)
-    plt.xlabel('Days', fontsize = 14)
-    plt.ylabel('Population', fontsize = 14)
-    plt.title('The spread of '+gossiper+'\'s lie', fontsize = 18)
-    plt.show()
+# with plt.rc_context({'figure.figsize':(9,7)}):
+#     plt.plot(times, Rumor[:, 0], lw='5', c = 'b', label= 'S')
+#     plt.plot(times, Rumor[:, 1], lw='5', c = 'r', label = 'I')
+#     plt.plot(times, Rumor[:, 2], lw='5', c = 'y', label = 'R')
+#     leg = plt.legend(loc='upper right',fontsize = 16)
+#     plt.xlabel('Days', fontsize = 14)
+#     plt.ylabel('Population', fontsize = 14)
+#     plt.title('The spread of '+gossiper+'\'s lie', fontsize = 18)
+#     plt.show()
