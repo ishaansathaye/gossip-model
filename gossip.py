@@ -1,5 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
+#https://github.com/izabelaguiar/The-Mathematics-of-Gossip/blob/master/The%20Mathematics%20of%20Gossip.ipynb
+#https://scholarship.claremont.edu/cgi/viewcontent.cgi?referer=&httpsredir=1&article=1048&context=codee
 
 def RK4(fun, y0, times, args=None):
     h = times[1]-times[0]
