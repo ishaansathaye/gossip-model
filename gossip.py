@@ -23,11 +23,13 @@ def gossip(Y, args):
     #Y is a state vector, starting with the defined initial conditions.
     #args is an array of the parameters necessary for the model
     #the value returned, dYdt is given from the system of ODEs defined above.
-    beta, gamma, p, alpha = args
-    S, I, R = Y
-    dYdt = np.array([-beta * S * I,\
-                     p * beta * S * I - gamma * I + alpha * R,\
-                     gamma * I - alpha * R + (1-p) * beta * S * I])
+    r_og, r_oi, p1, r_gb, r_gi, p2, r_ik, p3 = args
+    O, G, B, I, K = Y
+    dYdt = np.array([-r_og * O * G - r_oi * O * I, \
+                    p1 * r_og * O * G - r_gb * G - r_gi * G * I, \
+                    (1-p1) * r_og * O * G + r_gb * G, \
+                    p2 * r_oi * O * I + p3 * r_gi * G * I, \
+                    (1 - p2) * r_oi * O * I + (1-p3) * r_gi * G * I + r_ik * I])
     return dYdt
 
 # def parameters(gossiper, b=None, g=None, p=None, a=None):
@@ -64,7 +66,7 @@ def gossip(Y, args):
 
 # TotalPopulation = 1000
 # RumorStarters = 1
-# IC = np.array([TotalPopulation-RumorStarters, RumorStarters, 0.])
+# IC = np.array([TotalPopulation-RumorStarters, RumorStarters, 0., 0., 0.])
 
 # Days = 31.
 # times = np.arange(0., Days+delta, delta)
@@ -73,9 +75,11 @@ def gossip(Y, args):
 # Rumor = RK4(gossip, IC, times, parameters(gossiper))
 
 # with plt.rc_context({'figure.figsize':(9,7)}):
-#     plt.plot(times, Rumor[:, 0], lw='5', c = 'b', label= 'S')
-#     plt.plot(times, Rumor[:, 1], lw='5', c = 'r', label = 'I')
-#     plt.plot(times, Rumor[:, 2], lw='5', c = 'y', label = 'R')
+#     plt.plot(times, Rumor[:, 0], lw='5', c = 'b', label= 'O')
+#     plt.plot(times, Rumor[:, 1], lw='5', c = 'r', label = 'G')
+#     plt.plot(times, Rumor[:, 2], lw='5', c = 'y', label = 'B')
+#     plt.plot(times, Rumor[:, 3], lw='5', c = 'k', label = 'I')
+#     plt.plot(times, Rumor[:, 4], lw='5', c = 'g', label = 'K')
 #     leg = plt.legend(loc='upper right',fontsize = 16)
 #     plt.xlabel('Days', fontsize = 14)
 #     plt.ylabel('Population', fontsize = 14)
