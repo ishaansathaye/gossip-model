@@ -23,7 +23,9 @@ def gossip(Y, args):
     #Y is a state vector, starting with the defined initial conditions.
     #args is an array of the parameters necessary for the model
     #the value returned, dYdt is given from the system of ODEs defined above.
-    r_og, r_oi, p1, r_gb, r_gi, p2, r_ik, p3 = args
+    r_og, r_oi, p1, r_gb, r_gi, p2, r_ik, p3 = args 
+    #p1 - prop. of believes who beleive, p2 - prop. of non beleivers who dont beleive, p3 - prop. of gossipers,
+    #rest are rates from one group to another
     O, G, B, I, K = Y
     dYdt = np.array([-r_og * O * G - r_oi * O * I, \
                     p1 * r_og * O * G - r_gb * G - r_gi * G * I, \
@@ -32,46 +34,39 @@ def gossip(Y, args):
                     (1 - p2) * r_oi * O * I + (1-p3) * r_gi * G * I + r_ik * I])
     return dYdt
 
-# def parameters(gossiper, b=None, g=None, p=None, a=None):
-#     #this function is an easy way to access the anthropomorphized sensitivity analyses
-#     #the string gossiper is required. If the string is not one defined below, values
-#     #b, g, p, and a must also be sent to the function.
-#     #the returned values are the parameter values for beta, gamma, rho, and alpha.
-#     if gossiper == 'Regina George':
-#         beta = 0.03
-#         gamma = 0.1
-#         p = 0.2
-#         alpha = 0.
-#     elif gossiper == 'Dr. Neverheardofher':
-#         beta = 0.0001
-#         gamma = 0.00001
-#         p = 0.99
-#         alpha = 0.
-#     elif gossiper == 'the Conwoman':
-#         beta = 0.003
-#         gamma = 0.001
-#         p = 0.7
-#         alpha = 0.009
-#     elif gossiper == 'Test':
-#         beta = 0.002
-#         gamma = 0.01
-#         p = 0.6
-#         alpha = 0
-#     else:
-#         beta = b
-#         gamma = g
-#         p = p
-#         alpha = a
-#     return beta, gamma, p, alpha
+def parameters(gossiper, o_g=None, o_i=None, prop1=None, g_b=None, g_i=None, prop2=None, i_k=None, prop3=None):
+    #this function is an easy way to access the anthropomorphized sensitivity analyses
+    #the string gossiper is required. If the string is not one defined below, values
+    #b, g, p, and a must also be sent to the function.
+    #the returned values are the parameter values for beta, gamma, rho, and alpha.
+    if gossiper == 'Gossiper Name':
+        r_og = 0.3
+        r_oi = 0.1
+        p1 = 300.
+        r_gb = 0.05
+        r_gi = 0.02
+        p2 = 300.
+        r_ik = 0.06
+        p3 = 400.
+    else:
+        r_og = o_g
+        r_oi = o_i
+        p1 = prop1
+        r_gb = g_b
+        r_gi = g_i
+        p2 = prop2
+        r_ik = i_k
+        p3 = prop3
+    return r_og, r_oi, p1, r_gb, r_gi, p2, r_ik, p3
 
-# TotalPopulation = 1000
-# RumorStarters = 1
-# IC = np.array([TotalPopulation-RumorStarters, RumorStarters, 0., 0., 0.])
+TotalPopulation = 1000
+RumorStarters = 1
+IC = np.array([TotalPopulation-RumorStarters, RumorStarters, 0., 0., 0.])
 
 # Days = 31.
 # times = np.arange(0., Days+delta, delta)
 
-# gossiper = 'Test'
+# gossiper = 'Gossiper Name'
 # Rumor = RK4(gossip, IC, times, parameters(gossiper))
 
 # with plt.rc_context({'figure.figsize':(9,7)}):
