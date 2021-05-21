@@ -23,15 +23,15 @@ def gossip(Y, args):
     #Y is a state vector, starting with the defined initial conditions.
     #args is an array of the parameters necessary for the model
     #the value returned, dYdt is given from the system of ODEs defined above.
-    r_og, r_oi, p1, r_gb, r_gi, p2, r_ik, p3 = args 
+    rObliv_Goss, rObliv_Inform, p1, rGoss_Believ, rGoss_Inform, p2, rInform_Knowl, p3 = args 
     #p1 - prop. of believes who beleive, p2 - prop. of non beleivers who dont beleive, p3 - prop. of gossipers,
     #rest are rates from one group to another
     O, G, B, I, K = Y
-    dYdt = np.array([-r_og * O * G - r_oi * O * I, \
-                    p1 * r_og * O * G - r_gb * G - r_gi * G * I, \
-                    (1-p1) * r_og * O * G + r_gb * G, \
-                    p2 * r_oi * O * I + p3 * r_gi * G * I, \
-                    (1 - p2) * r_oi * O * I + (1-p3) * r_gi * G * I + r_ik * I])
+    dYdt = np.array([-rObliv_Goss * O * G - rObliv_Inform * O * I, \
+                    p1 * rObliv_Goss * O * G - rGoss_Believ * G - rGoss_Inform * G * I, \
+                    (1-p1) * rObliv_Goss * O * G + rGoss_Believ * G, \
+                    p2 * rObliv_Inform * O * I + p3 * rGoss_Inform * G * I, \
+                    (1 - p2) * rObliv_Inform * O * I + (1-p3) * rGoss_Inform * G * I + rInform_Knowl * I])
     return dYdt
 
 def parameters(gossiper, o_g=None, o_i=None, prop1=None, g_b=None, g_i=None, prop2=None, i_k=None, prop3=None):
@@ -40,43 +40,43 @@ def parameters(gossiper, o_g=None, o_i=None, prop1=None, g_b=None, g_i=None, pro
     #b, g, p, and a must also be sent to the function.
     #the returned values are the parameter values for beta, gamma, rho, and alpha.
     if gossiper == 'Gossiper Name':
-        r_og = 0.3
-        r_oi = 0.1
-        p1 = 300.
-        r_gb = 0.05
-        r_gi = 0.02
-        p2 = 300.
-        r_ik = 0.06
-        p3 = 400.
+        rObliv_Goss = 0.002
+        rObliv_Inform = 0.01
+        p1 = 0.3
+        rGoss_Believ = 0.05
+        rGoss_Inform = 0.02
+        p2 = 0.3
+        rInform_Knowl = 0.008
+        p3 = 0.4
     else:
-        r_og = o_g
-        r_oi = o_i
+        rObliv_Goss = o_g
+        rObliv_Inform = o_i
         p1 = prop1
-        r_gb = g_b
-        r_gi = g_i
+        rGoss_Believ = g_b
+        rGoss_Inform = g_i
         p2 = prop2
-        r_ik = i_k
+        rInform_Knowl = i_k
         p3 = prop3
-    return r_og, r_oi, p1, r_gb, r_gi, p2, r_ik, p3
+    return rObliv_Goss, rObliv_Inform, p1, rGoss_Believ, rGoss_Inform, p2, rInform_Knowl, p3
 
 TotalPopulation = 1000
 RumorStarters = 1
 IC = np.array([TotalPopulation-RumorStarters, RumorStarters, 0., 0., 0.])
 
-# Days = 31.
-# times = np.arange(0., Days+delta, delta)
+Days = 31.
+times = np.arange(0., Days+delta, delta)
 
-# gossiper = 'Gossiper Name'
-# Rumor = RK4(gossip, IC, times, parameters(gossiper))
+gossiper = 'Gossiper Name'
+Rumor = RK4(gossip, IC, times, parameters(gossiper))
 
-# with plt.rc_context({'figure.figsize':(9,7)}):
-#     plt.plot(times, Rumor[:, 0], lw='5', c = 'b', label= 'O')
-#     plt.plot(times, Rumor[:, 1], lw='5', c = 'r', label = 'G')
-#     plt.plot(times, Rumor[:, 2], lw='5', c = 'y', label = 'B')
-#     plt.plot(times, Rumor[:, 3], lw='5', c = 'k', label = 'I')
-#     plt.plot(times, Rumor[:, 4], lw='5', c = 'g', label = 'K')
-#     leg = plt.legend(loc='upper right',fontsize = 16)
-#     plt.xlabel('Days', fontsize = 14)
-#     plt.ylabel('Population', fontsize = 14)
-#     plt.title('The spread of '+gossiper+'\'s lie', fontsize = 18)
-#     plt.show()
+with plt.rc_context({'figure.figsize':(9,7)}):
+    plt.plot(times, Rumor[:, 0], lw='5', c = 'b', label= 'O')
+    plt.plot(times, Rumor[:, 1], lw='5', c = 'r', label = 'G')
+    plt.plot(times, Rumor[:, 2], lw='5', c = 'y', label = 'B')
+    plt.plot(times, Rumor[:, 3], lw='5', c = 'k', label = 'I')
+    plt.plot(times, Rumor[:, 4], lw='5', c = 'g', label = 'K')
+    leg = plt.legend(loc='upper right',fontsize = 16)
+    plt.xlabel('Days', fontsize = 14)
+    plt.ylabel('Population', fontsize = 14)
+    plt.title('The spread of '+gossiper+'\'s lie', fontsize = 18)
+    plt.show()
