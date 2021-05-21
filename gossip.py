@@ -63,7 +63,7 @@ TotalPopulation = 1000
 RumorStarters = 1
 IC = np.array([TotalPopulation-RumorStarters, RumorStarters, 0., 0., 0.])
 
-Days = 31.
+Days = 100.
 times = np.arange(0., Days+delta, delta)
 
 gossiper = 'Gossiper Name'
@@ -78,5 +78,5 @@ with plt.rc_context({'figure.figsize':(9,7)}):
     leg = plt.legend(loc='upper right',fontsize = 16)
     plt.xlabel('Days', fontsize = 14)
     plt.ylabel('Population', fontsize = 14)
-    plt.title('The spread of '+gossiper+'\'s lie', fontsize = 18)
+    plt.title('The Spread of '+gossiper+'\'s lie', fontsize = 18)
     plt.show()
