@@ -39,14 +39,14 @@ def parameters(gossiper, o_g=None, o_i=None, prop1=None, g_b=None, g_i=None, pro
     #the string gossiper is required. If the string is not one defined below, values
     #b, g, p, and a must also be sent to the function.
     #the returned values are the parameter values for beta, gamma, rho, and alpha.
-    if gossiper == 'Gossiper Name':
-        rObliv_Goss = 0.002
+    if gossiper == 'Gossiper':
+        rObliv_Goss = 0.0005
         rObliv_Inform = 0.01
         p1 = 0.3
-        rGoss_Believ = 0.05
-        rGoss_Inform = 0.02
+        rGoss_Believ = 0.0003
+        rGoss_Inform = 0.0006
         p2 = 0.3
-        rInform_Knowl = 0.008
+        rInform_Knowl = 0.1
         p3 = 0.4
     else:
         rObliv_Goss = o_g
@@ -66,7 +66,7 @@ IC = np.array([TotalPopulation-RumorStarters, RumorStarters, 0., 0., 0.])
 Days = 100.
 times = np.arange(0., Days+delta, delta)
 
-gossiper = 'Gossiper Name'
+gossiper = 'Gossiper'
 Rumor = RK4(gossip, IC, times, parameters(gossiper))
 
 with plt.rc_context({'figure.figsize':(9,7)}):
